@@ -17,7 +17,7 @@
 
     <ul class="sidenav main-menu" ref="sidenav" id="mobile-demo">
        <li v-for="(link, ind) in menu" :key="ind">
-        <router-link :to="link.to" tag="a">
+        <router-link :to="link.to" tag="a" class="sidenav-close">
          <i class="material-icons left">{{link.icon}}</i>
          {{link.text}}
        </router-link>
