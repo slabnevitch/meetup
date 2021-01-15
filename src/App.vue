@@ -22,6 +22,10 @@ export default {
 <style lang="scss">
   @import '~materialize-css/dist/css/materialize.min.css';
   @import './assets/scss/_mixins';
+  ._fit{
+    width: 100%;
+    position: relative;
+  }
   ._fit img{//_fit - class for object-fit
     width: 100%;
     height: 100%;

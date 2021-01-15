@@ -81,6 +81,7 @@
 				if(this.isValid){
 					console.log('isValid!')
 					this.$store.dispatch('createMeetup', meetup)
+					this.$router.push('/meetups')
 				}
 			},
 			sbmitClick(){
@@ -89,3 +90,8 @@
 		}
 	}
 </script>
+<style>
+	.loaded-img{
+		padding-bottom: 52.26%;
+	}
+</style>
