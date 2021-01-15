@@ -25,13 +25,21 @@ export default new Vuex.Store({
   		}
   },
   mutations: {
+    setNewMeetup(state, payload){
+      state.meetups.push(payload)
+    }
   },
   actions: {
+    createMeetup({commit}, payload){
+      const newMeetup = {...payload}
+      console.log(newMeetup)
+      commit('setNewMeetup', newMeetup)
+    }
   },
   getters: {
   	getMeetups: (state) => state.meetups.sort((a, b) => a.date - b.date),
   	getFeaturedMeetups: (state, getters) => getters.getMeetups.slice(0, 5),
-  	getLoadedMeetup: (state) => (meetupId) => state.meetups.find(meetup => meetup.id === meetupId) //идет обращение к геттеру не как к к свойству, а как к ф-ции.
+  	getLoadedMeetup: (state) => (meetupId) => state.meetups.find(meetup => meetup.id.toString() === meetupId) //идет обращение к геттеру не как к к свойству, а как к ф-ции.
   },
   modules: {
   }

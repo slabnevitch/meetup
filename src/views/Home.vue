@@ -8,14 +8,16 @@
       	</div>
     		<h4>Присоединяйтесь к нашим замечательным мероприятиям!</h4>
     		<div class="carousel" ref="carousel">
-    			<a 
+    			<router-link 
+    				tag="a"
     				v-for="(meet, ind) in meetups"
+    				:to="/meetups/+meet.id"
     				:key="meet.title"
 	    			class="carousel-item _fit" 
 	    			href="#one!">
 	    				<img :src="meet.img">
 	    				<span class="carousel-item__title">{{meet.title}}</span>
-    			</a>
+    			</router-link>
     		</div>
     	</div>
     </div>

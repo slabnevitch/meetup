@@ -46,7 +46,7 @@ export default {
         {
           text: 'Профиль',
           icon: 'person',
-          to: 'profile'
+          to: '/profile'
         },
         {
           text: 'Зарегистрироваться',

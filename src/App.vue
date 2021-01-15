@@ -25,6 +25,7 @@ export default {
   ._fit img{//_fit - class for object-fit
     width: 100%;
     height: 100%;
+    position: absolute;
     object-fit: cover; 
     object-position: center center;
   }
