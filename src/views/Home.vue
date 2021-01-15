@@ -1,14 +1,12 @@
 <template>
     <div class="row">
-      <div class="col s12">
-    		<div>Home page</div>
-    	</div>
-      <div class="col s12 center-align meetups-buttons">
-      	<router-link to="/meetups" tag="a" class="waves-effect waves-light btn">просмотр мероприятий</router-link>
-      	<router-link to="/create-meetup" tag="a" class="waves-effect waves-light btn">организовать мероприятие</router-link>
-    	</div>
 
     	<div class="col s12 center-align">
+        <div class="col s12 center-align meetups-buttons">
+        	<router-link to="/meetups" tag="a" class="waves-effect waves-light btn">просмотр мероприятий</router-link>
+        	<router-link to="/create-meetup" tag="a" class="waves-effect waves-light btn">организовать мероприятие</router-link>
+      	</div>
+    		<h4>Присоединяйтесь к нашим замечательным мероприятиям!</h4>
     		<div class="carousel" ref="carousel">
     			<a 
     				v-for="(meet, ind) in meetups"
@@ -18,12 +16,7 @@
 	    				<img :src="meet.img">
 	    				<span class="carousel-item__title">{{meet.title}}</span>
     			</a>
-    			<!-- <a class="carousel-item _fit" href="#three!"><img src="https://lorempixel.com/250/250/nature/3"></a>
-    			<a class="carousel-item _fit" href="#four!"><img src="https://lorempixel.com/250/250/nature/4"></a>
-    			<a class="carousel-item _fit" href="#five!"><img src="https://lorempixel.com/250/250/nature/5"></a> -->
     		</div>
-    		<p>Присоединяйтесь к нашим замечательным мероприятиям!</p>
-
     	</div>
     </div>
 
@@ -37,29 +30,32 @@ export default {
   name: 'Home',
   data(){
   	return{
-  		instances: null,
-  		meetups: [
-  			{
-  				title: "Киев. Праздник на октябрьской площади",
-  				img: 'https://pbs.twimg.com/media/CMeZ32uUAAAIEja.jpg'
-  			},
-  			{
-  				title: "Кев. Выставка в павильонах ВДНД",
-  				img: 'https://pbs.twimg.com/media/DdPOureX4AAlL1R.jpg'
-  			}
-  		]
+  		instances: null
   	}
   },
   components: {
     // HelloWorld
   },
+  computed: {
+    meetups(){
+      return this.$store.getters.getFeaturedMeetups
+    }
+  },
   mounted(){
-    this.instances = M.Carousel.init(this.$refs.carousel, {
-    	dist: 0,
-    	indicators: true,
-    	fullWidth: true,
-    	numVisible: 1
-    });
+  	setTimeout(() => {
+		this.instances = M.Carousel.init(this.$refs.carousel, {
+	    	dist: 0,
+	    	indicators: true,
+	    	fullWidth: true,
+	    	numVisible: 1
+	    });
+    }, 0)
+    
+  },
+  destroyed(){
+    if(this.instances != null){
+      this.instances.destroy();
+    }
   }
 }
 </script>
@@ -69,7 +65,7 @@ export default {
 		display: flex;
 		justify-content: space-around;
 		flex-wrap: wrap;
-		margin-bottom: 30px;
+		margin: 30px 0;
 		a{
 			margin: 5px 15px;
 		}
