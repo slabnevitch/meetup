@@ -9,14 +9,18 @@ export default new Vuex.Store({
   			{
   				title: "Киев. Праздник на октябрьской площади",
   				img: 'https://pbs.twimg.com/media/CMeZ32uUAAAIEja.jpg',
+          description: 'Какое-то описание мероприятия',
+          location: 'Киев, Украина',
   				id: 'iddqd-1',
-  				date: '16-01-2021'
+  				date: 'Thu Jan 14 2021 00:00:00 GMT+0500 (Екатеринбург, стандартное время)'
   			},
   			{
   				title: "Кев. Выставка в павильонах ВДНД",
   				img: 'https://pbs.twimg.com/media/DdPOureX4AAlL1R.jpg',
+          description: 'Какое-то описание мероприятия',
+          location: 'Киев, Украина',
   				id: 'iddqd-2',
-  				date: '17-01-2021'
+  				date: 'Thu Jan 14 2021 00:00:00 GMT+0500 (Екатеринбург, стандартное время)'
   			}
   		],
   		user: {

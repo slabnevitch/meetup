@@ -15,7 +15,7 @@
   			<div class="card-stacked">
   				<div class="card-content">
   					<div class="card-title">{{meetup.title}}</div>
-  					<span class="badge">{{meetup.date}}</span>
+  					<span class="badge">{{meetup.date | dateFilter}}</span>
   					<!-- <p>I am a very simple card. I am good at containing small bits of information.</p> -->
   				</div>
   				<div class="card-action">

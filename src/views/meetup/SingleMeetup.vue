@@ -7,9 +7,9 @@
 					<span class="card-title">{{meetup.title}}</span>
 				</div>
 				<div class="card-content">
-					<p class="meet-date">Дата: <b>{{meetup.date}}</b></p>
-					<p>I am a very simple card. I am good at containing small bits of information.
-					I am convenient because I require little markup to use effectively.</p>
+					<p class="meet-date">Дата: <b>{{meetup.date | dateFilter}}</b></p>
+					<p class="meet-date">Место: <b>{{meetup.location}}</b></p>
+					<p>{{meetup.description}}</p>
 				</div>
 				<div class="card-action right-align">
 					<a class="waves-effect waves-light btn-large red lighten-1">Зарегистрироваться</a>
@@ -26,9 +26,6 @@
 			meetup(){
 				return this.$store.getters.getLoadedMeetup(this.$route.params.id)
 			}
-		},
-		created(){
-			console.log(this.$route.params)
 		}
 	}
 </script>

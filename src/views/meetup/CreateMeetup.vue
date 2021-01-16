@@ -1,15 +1,16 @@
 <template>
   <div class="row">
   	<div class="col s12">
-    	<h3>Создайте новое мероприятие!</h3>	
+    	<h3 class="center-align">Создайте новое мероприятие!</h3>
   	</div>
-  	<form class="col s12 m6 offset-m3" @submit.prevent="formSubmit">
-  		<div>isValid {{isValid}}</div>
+  	<form class="col s12 l6 offset-l3" @submit.prevent="formSubmit">
+  		<!-- <div>isValid {{isValid}}</div> -->
   		<div class="input-field">
   			<input 
 	  			id="title" 
 	  			type="text" 
 	  			class="validate"
+	  			required
 	  			v-model="title">
   			<label for="title">Название*</label>
   		</div>
@@ -18,14 +19,36 @@
 	  			id="location" 
 	  			type="text" 
 	  			class="validate"
+	  			required
 	  			v-model="location">
   			<label for="location">Месторасположение*</label>
+  		</div>
+  		<div class="input-field">
+  			<input 
+  				ref="datepicker"
+	  			id="datepick" 
+	  			type="text" 
+	  			class="datepicker"
+	  			required
+	  			v-model="date">
+  			<label for="datepick"">Дата мероприятия*</label>
+  		</div>
+  		<div class="input-field">
+  			<input
+  				ref="timepicker" 
+	  			type="text"
+	  			id="timeepick" 
+	  			class="timepicker"
+	  			required
+	  			v-model="time">
+  			<label for="timeepick"">Время начала мероприятия*</label>
   		</div>
   		<div class="input-field">
   			<input 
 	  			id="img-url" 
 	  			type="text" 
 	  			class="validate"
+	  			required
 	  			v-model="img">
   			<label for="img-url">url-адрес изображения*</label>
   		</div>
@@ -39,13 +62,13 @@
           		v-model="description"
 	          id="textarea1" 
 	          class="materialize-textarea"></textarea>
-          <label for="textarea1">Описание*</label>
+          <label for="textarea1">Описание</label>
         </div>
         <button 
 	        type="submit" 
 	        :disabled="!isValid" 
 	        class="waves-effect waves-light btn-large"
-	        @click="sbmitClick">Создать</button>
+	        >Создать</button>
     </form>
   </div>
 </template>
@@ -57,7 +80,16 @@
 				title: '',
 				location: '',
 				img: '',
-				description: ''
+				description: '',
+				// datePick: "",
+				date: '',
+				time: '',
+				hoursAndMinutes: {
+					hours: '00',
+					minutes: '00'
+				},
+				datePicker: null,
+				timePicker: null
 			}
 		},
 		computed: {
@@ -65,7 +97,20 @@
 				return this.title != '' &&
 					this.location != '' &&
 					this.img != '' &&
-					this.description != ''
+					this.date != '' &&
+					this.time != ''
+					// this.description != ''
+			},
+			getHoursAndMinutes(){
+				return
+			},
+			dateTimeSumm(){
+				console.log('dateTimeSumm() hours ' + typeof this.hoursAndMinutes.hours)
+				console.log('dateTimeSumm() minutes ' + typeof this.hoursAndMinutes.minutes)
+				let dateFull = new Date(this.date)
+				dateFull.setHours(this.hoursAndMinutes.hours)
+				dateFull.setMinutes(this.hoursAndMinutes.minutes)
+				return dateFull
 			}
 		},
 		methods: {
@@ -75,7 +120,7 @@
 					location: this.location,
 					img: this.img, 
 					description: this.description,
-					date: new Date(),
+					date: this.dateTimeSumm,
 					id: +new Date()
 				}
 				if(this.isValid){
@@ -83,9 +128,29 @@
 					this.$store.dispatch('createMeetup', meetup)
 					this.$router.push('/meetups')
 				}
-			},
-			sbmitClick(){
+			}
+		},
+		mounted(){
+			this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
+				onSelect: (date) => {
+					this.date = date
+				}
+			});
 
+			this.timePicker = M.Timepicker.init(this.$refs.timepicker, {
+				twelveHour:false,
+				onSelect: (hour, minute) => {
+					this.hoursAndMinutes.hours = hour
+					this.hoursAndMinutes.minutes = minute
+				}
+			})
+		},
+		destroyed(){
+			if(this.datePicker){
+				this.datePicker.destroy()
+			}
+			if(this.timePicker){
+				this.timePicker.destroy()
 			}
 		}
 	}
