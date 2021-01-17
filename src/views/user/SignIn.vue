@@ -3,7 +3,26 @@
   	<div class="col s12">
     	<h3 class="center-align">Вход</h3>
   	</div>
-  	<form class="col s12 l6 offset-l3" @submit.prevent="formSubmit">
+
+  	<div 
+	  	class="col s12 center-align" 
+	  	center-align
+	  	v-show="isPreload"
+	  	>
+		<div class="preloader-wrapper big active">
+			<div class="spinner-layer spinner-blue-only">
+				<div class="circle-clipper left">
+					<div class="circle"></div>
+				</div><div class="gap-patch">
+					<div class="circle"></div>
+				</div><div class="circle-clipper right">
+					<div class="circle"></div>
+				</div>
+			</div>
+		</div>
+  	</div>
+
+  	<form v-show="!isPreload" class="col s12 l6 offset-l3" @submit.prevent="formSubmit">
   		<!-- <div>isValid {{isValid}}</div> -->
   		<div class="input-field">
   			<input 
@@ -47,6 +66,9 @@
 			}
 		},
 		computed: {
+			isPreload(){
+				return this.$store.getters.getPreloader
+			},
 			isValid(){
 				return this.email!= '' &&
 					this.validateEmail(this.email) &&

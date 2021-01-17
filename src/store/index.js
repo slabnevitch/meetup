@@ -26,7 +26,9 @@ export default new Vuex.Store({
   				date: 'Thu Jan 14 2021 00:00:00 GMT+0500 (Екатеринбург, стандартное время)'
   			}
   		],
-  		user: null
+  		user: null,
+      preloader: false,
+      error: null
   },
   mutations: {
     setNewMeetup(state, payload){
@@ -34,6 +36,15 @@ export default new Vuex.Store({
     },
     setNewUser(state, payload){
       state.user = payload
+    },
+    setPreloader(state, payload){
+      state.preloader = payload
+    },
+    setError(state, payload){
+      state.error = payload
+    },
+    clearError(state, payload){
+      state.error = payload
     }
   },
   actions: {
@@ -44,6 +55,8 @@ export default new Vuex.Store({
     },
     signup({commit}, payload){
       console.log(payload)
+      commit('setPreloader', true)
+
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then( user => { 
           console.log(user)
@@ -54,13 +67,16 @@ export default new Vuex.Store({
           }
           
           commit('setNewUser', newUser)
+          commit('setPreloader', false)
         })
         .catch(function(error) {
-
+          commit('setError', error.message)
+          commit('setPreloader', false)
           console.log(error);
         });
     },
     signin({commit}, payload){
+      commit('setPreloader', true)
 
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then( user => { 
@@ -72,9 +88,11 @@ export default new Vuex.Store({
           }
           
           commit('setNewUser', newUser)
+          commit('setPreloader', false)
         })
         .catch(function(error) {
-
+          commit('setError', error.message)
+          commit('setPreloader', false)
           console.log(error);
         });
     },
@@ -84,7 +102,11 @@ export default new Vuex.Store({
   	getMeetups: (state) => state.meetups.sort((a, b) => a.date - b.date),
   	getFeaturedMeetups: (state, getters) => getters.getMeetups.slice(0, 5),
   	getLoadedMeetup: (state) => (meetupId) => state.meetups.find(meetup => meetup.id.toString() === meetupId), //идет обращение к геттеру не как к к свойству, а как к ф-ции.
-    getUser: (state) => state.user
+    
+    getUser: (state) => state.user,
+    
+    getPreloader: (state) => state.preloader,
+    getError: (state) => state.error
   },
   modules: {
   }

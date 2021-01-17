@@ -2,6 +2,17 @@
   <div class="row">
   	<div class="col s12">
     	<h3 class="center-align">Регистрация пользователя</h3>
+    	<div v-show="isPreload" class="preloader-wrapper big active">
+    		<div class="spinner-layer spinner-blue-only">
+    			<div class="circle-clipper left">
+    				<div class="circle"></div>
+    			</div><div class="gap-patch">
+    				<div class="circle"></div>
+    			</div><div class="circle-clipper right">
+    				<div class="circle"></div>
+    			</div>
+    		</div>
+    	</div>
   	</div>
   	<form class="col s12 l6 offset-l3" @submit.prevent="formSubmit">
   		<!-- <div>isValid {{isValid}}</div> -->
@@ -61,6 +72,9 @@
 			}
 		},
 		computed: {
+			isPreload(){
+				return this.$store.getters.getPreloader
+			},
 			isValid(){
 				return this.email!= '' &&
 					this.validateEmail(this.email) &&
