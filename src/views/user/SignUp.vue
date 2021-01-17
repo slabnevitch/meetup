@@ -42,20 +42,6 @@
   				class="helper-text red-text">Текст не соответствует веденному паролю</span>
   		</div>
 
-  		<!-- <div class="input-field">
-  			<input 
-	  			id="confirm" 
-	  			type="password"
-	  			class="validate" 
-	  			required
-	  			v-model="confirm">
-  			<label for="confirm"">Повторите пароль*</label>
-  			<span 
-	  			сlass="helper-text red-text" 
-	  			v-show="!isConfimEqual"
-	  			>Текст не соответствует веденному паролю</span>
-  		</div>
- -->
   		<button 
 	  		type="submit" 
 	  		:disabled="!isValid" 
@@ -91,26 +77,37 @@
 			},
 			isPasswordLength(){
 				return this.password.length > 0 ? this.password.length >= 6 : true
-			}
-	},
-	methods: {
-			validateEmail(email) {
-			    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-			    return re.test(String(email).toLowerCase());
 			},
-			formSubmit(){
-				const user = {
-					email:this.email,
-					password: this.password
-				}
-				if(this.isValid){
-					console.log('isValid!')
-					console.log(user)
-
-					// this.$store.dispatch('createMeetup', meetup)
-					// this.$router.push('/meetups')
+			user(){
+				return this.$store.getters.getUser
+			}
+		},
+		watch: {
+			user(value){
+				console.log(value)
+				if(value){
+					this.$router.push('/')
 				}
 			}
-	}
+		},
+		methods: {
+				validateEmail(email) {
+				    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				    return re.test(String(email).toLowerCase());
+				},
+				formSubmit(){
+					const user = {
+						email:this.email,
+						password: this.password
+					}
+					if(this.isValid){
+						console.log('isValid!')
+						console.log(user)
+
+						this.$store.dispatch('signup', user)
+						
+					}
+				}
+		}
 }
 </script>
