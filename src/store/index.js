@@ -9,22 +9,22 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
   		meetups: [
-  			{
-  				title: "Киев. Праздник на октябрьской площади",
-  				img: 'https://pbs.twimg.com/media/CMeZ32uUAAAIEja.jpg',
-          description: 'Какое-то описание мероприятия',
-          location: 'Киев, Украина',
-  				id: 'iddqd-1',
-  				date: 'Thu Jan 14 2021 00:00:00 GMT+0500 (Екатеринбург, стандартное время)'
-  			},
-  			{
-  				title: "Кев. Выставка в павильонах ВДНД",
-  				img: 'https://pbs.twimg.com/media/DdPOureX4AAlL1R.jpg',
-          description: 'Какое-то описание мероприятия',
-          location: 'Киев, Украина',
-  				id: 'iddqd-2',
-  				date: 'Thu Jan 14 2021 00:00:00 GMT+0500 (Екатеринбург, стандартное время)'
-  			}
+  			// {
+  			// 	title: "Киев. Праздник на октябрьской площади",
+  			// 	img: 'https://pbs.twimg.com/media/CMeZ32uUAAAIEja.jpg',
+     //      description: 'Какое-то описание мероприятия',
+     //      location: 'Киев, Украина',
+  			// 	id: 'iddqd-1',
+  			// 	date: 'Thu Jan 14 2021 00:00:00 GMT+0500 (Екатеринбург, стандартное время)'
+  			// },
+  			// {
+  			// 	title: "Кев. Выставка в павильонах ВДНД",
+  			// 	img: 'https://pbs.twimg.com/media/DdPOureX4AAlL1R.jpg',
+     //      description: 'Какое-то описание мероприятия',
+     //      location: 'Киев, Украина',
+  			// 	id: 'iddqd-2',
+  			// 	date: 'Thu Jan 14 2021 00:00:00 GMT+0500 (Екатеринбург, стандартное время)'
+  			// }
   		],
   		user: null,
       preloader: false,
@@ -33,6 +33,9 @@ export default new Vuex.Store({
   mutations: {
     setNewMeetup(state, payload){
       state.meetups.push(payload)
+    },
+    setFetchedMeetups(state, payload){
+      state.meetups = payload
     },
     setNewUser(state, payload){
       state.user = payload
@@ -49,9 +52,45 @@ export default new Vuex.Store({
   },
   actions: {
     createMeetup({commit}, payload){
+      commit('setPreloader', true)
       const newMeetup = {...payload}
-      console.log(newMeetup)
-      commit('setNewMeetup', newMeetup)
+      console.log(typeof newMeetup.date)
+      // commit('setNewMeetup', newMeetup)
+      
+      const pushResult = firebase.database().ref(`meetups/`).push(newMeetup)
+        .then(meetup => {
+          console.log(meetup)
+          commit('setPreloader', false)
+          return true
+        })
+        .catch(e => {
+          commit('setError', e.message)
+          commit('setPreloader', false)
+        })
+
+      return pushResult
+    },
+    fetchMeetups({commit}){
+      commit('setPreloader', true)
+
+      const readyMeetups = firebase.database().ref(`/meetups`).once('value')
+        .then(fetchedMeetups => {
+          const objMeetups = fetchedMeetups.val() || {}
+          const meetups = Object.keys(objMeetups).map(key => ({
+            ...objMeetups[key],
+            id: key
+          }))
+
+          console.log(meetups)
+          commit('setFetchedMeetups', meetups)
+          commit('setPreloader', false)
+        })
+        .catch(e => {
+          commit('setError', e.message)
+          commit('setPreloader', false)
+        })
+
+      return readyMeetups
     },
     signup({commit}, payload){
       console.log(payload)

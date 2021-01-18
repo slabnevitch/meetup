@@ -7,7 +7,10 @@
         	<router-link to="/create-meetup" tag="a" class="waves-effect waves-light btn">организовать мероприятие</router-link>
       	</div>
     		<h4>Присоединяйтесь к нашим замечательным мероприятиям!</h4>
-    		<div class="carousel" ref="carousel">
+    		
+    		<Preloader v-show="isPreload"></Preloader>
+    		
+    		<div v-show="!isPreload" class="carousel" ref="carousel">
     			<router-link 
     				tag="a"
     				v-for="(meet, ind) in meetups"
@@ -27,7 +30,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-
+import Preloader from '@/components/Preloader.vue'
 export default {
   name: 'Home',
   data(){
@@ -36,14 +39,21 @@ export default {
   	}
   },
   components: {
-    // HelloWorld
+    Preloader
   },
   computed: {
+  	isPreload(){
+  		return this.$store.getters.getPreloader
+  	},
     meetups(){
       return this.$store.getters.getFeaturedMeetups
     }
   },
-  mounted(){
+  created(){
+  },
+  async mounted(){
+  	await this.$store.dispatch('fetchMeetups')
+  	console.log('fetchMeetups loaded ')
   	setTimeout(() => {
 		this.instances = M.Carousel.init(this.$refs.carousel, {
 	    	dist: 0,
@@ -73,6 +83,7 @@ export default {
 		}
 	}
 	.carousel .carousel-item{
+		// visibility: visible; 
 		height: 0;
 		width: 100%;
 		display: block;

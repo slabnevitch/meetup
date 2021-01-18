@@ -22,6 +22,10 @@ export default {
 <style lang="scss">
   @import '~materialize-css/dist/css/materialize.min.css';
   @import './assets/scss/_mixins';
+
+  body{
+    overflow: auto !important;
+  }
   ._fit{
     width: 100%;
     position: relative;

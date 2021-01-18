@@ -2,8 +2,12 @@
   <div class="row">
   	<div class="col s12">
     	<h3 class="center-align">Создайте новое мероприятие!</h3>
+  		<!-- <p>{{isPreload}}</p> -->
   	</div>
-  	<form class="col s12 l6 offset-l3" @submit.prevent="formSubmit">
+
+  	<Preloader v-if="isPreload"></Preloader>
+
+  	<form v-else class="col s12 l6 offset-l3" @submit.prevent="formSubmit">
   		<!-- <div>isValid {{isValid}}</div> -->
   		<div class="input-field">
   			<input 
@@ -74,6 +78,8 @@
 </template>
 
 <script>
+	import Preloader from '@/components/Preloader.vue'
+
 	export default {
 		data(){
 			return{
@@ -92,7 +98,16 @@
 				timePicker: null
 			}
 		},
+		components: {
+			Preloader
+		},
 		computed: {
+			error(){
+				return this.$store.getters.getError
+			},
+			isPreload(){
+				return this.$store.getters.getPreloader
+			},
 			isValid(){
 				return this.title != '' &&
 					this.location != '' &&
@@ -113,20 +128,37 @@
 				return dateFull
 			}
 		},
+		watch: {
+			user(value){
+				console.log(value)
+				if(value){
+					this.$router.push('/')
+				}
+			},
+			error(value){
+				if(value){
+					this.$error(value)
+				}
+				console.log(value)
+			}
+		},
 		methods: {
-			formSubmit(){
+			async formSubmit(){
 				const meetup = {
 					title: this.title,
 					location: this.location,
 					img: this.img, 
 					description: this.description,
-					date: this.dateTimeSumm,
-					id: +new Date()
+					date: this.dateTimeSumm.toISOString(),
 				}
 				if(this.isValid){
 					console.log('isValid!')
-					this.$store.dispatch('createMeetup', meetup)
-					this.$router.push('/meetups')
+					const created = await this.$store.dispatch('createMeetup', meetup)
+					console.log('await created' + created)
+					if(created){
+						this.$store.commit('setPreloader', false)
+						this.$router.push('/meetups')
+					}
 				}
 			}
 		},
@@ -142,6 +174,7 @@
 				onSelect: (hour, minute) => {
 					this.hoursAndMinutes.hours = hour
 					this.hoursAndMinutes.minutes = minute
+					this.time = hour + ':' + minute
 				}
 			})
 		},

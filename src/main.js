@@ -29,6 +29,7 @@ new Vue({
   created(){
 
   	firebase.initializeApp(firebaseConfig);
+    // this.$store.dispatch('fetchMeetups')
   },
   render: h => h(App)
 }).$mount('#app')

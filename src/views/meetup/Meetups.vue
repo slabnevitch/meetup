@@ -3,7 +3,8 @@
   	<div class="col s12">
     	<h1 class="header">Список мероприятий</h1>  		
   	</div>
-  	<div class="col s12">
+  	<Preloader v-if="isPreload"></Preloader>
+  	<div b-else class="col s12">
   		<div 
 	  		class="card horizontal"
 	  		v-for="(meetup, ind) in meetups"
@@ -15,7 +16,7 @@
   			<div class="card-stacked">
   				<div class="card-content">
   					<div class="card-title">{{meetup.title}}</div>
-  					<span class="badge">{{meetup.date | dateFilter}}</span>
+  					<span class="badge">{{new Date(meetup.date) | dateFilter}}</span>
   					<!-- <p>I am a very simple card. I am good at containing small bits of information.</p> -->
   				</div>
   				<div class="card-action">
@@ -29,11 +30,23 @@
 </template>
 
 <script>
+	import Preloader from '@/components/Preloader.vue'
+
 	export default {
 		computed: {
+			isPreload(){
+				return this.$store.getters.getPreloader
+			},
 			meetups(){
 				return this.$store.getters.getMeetups
-			}
+			},
+		},
+		components: {
+			Preloader
+		},
+		created(){
+			console.log('meetups mounted')
+			this.$store.dispatch('fetchMeetups')
 		}
 	}
 </script>
