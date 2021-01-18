@@ -43,8 +43,8 @@ export default new Vuex.Store({
     setError(state, payload){
       state.error = payload
     },
-    clearError(state, payload){
-      state.error = payload
+    clearError(state){
+      state.error = null
     }
   },
   actions: {
@@ -55,6 +55,8 @@ export default new Vuex.Store({
     },
     signup({commit}, payload){
       console.log(payload)
+
+      commit('clearError')
       commit('setPreloader', true)
 
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
@@ -76,6 +78,8 @@ export default new Vuex.Store({
         });
     },
     signin({commit}, payload){
+
+      commit('clearError')
       commit('setPreloader', true)
 
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)

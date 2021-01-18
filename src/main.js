@@ -4,12 +4,14 @@ import router from './router'
 import store from './store'
 import 'materialize-css/dist/js/materialize.min'
 import dateFilter from './filters/dateFilter'
+import toastMessages from './utils/messagesPlugin'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 
 Vue.config.productionTip = false
 Vue.filter('dateFilter', dateFilter)
+Vue.use(toastMessages)
 
 var firebaseConfig = {
     apiKey: "AIzaSyBW1GZGjDHHmOCSvzMZ_wBQAIlc5FCKcZY",

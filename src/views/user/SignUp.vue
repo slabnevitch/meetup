@@ -2,19 +2,9 @@
   <div class="row">
   	<div class="col s12">
     	<h3 class="center-align">Регистрация пользователя</h3>
-    	<div v-show="isPreload" class="preloader-wrapper big active">
-    		<div class="spinner-layer spinner-blue-only">
-    			<div class="circle-clipper left">
-    				<div class="circle"></div>
-    			</div><div class="gap-patch">
-    				<div class="circle"></div>
-    			</div><div class="circle-clipper right">
-    				<div class="circle"></div>
-    			</div>
-    		</div>
-    	</div>
   	</div>
-  	<form class="col s12 l6 offset-l3" @submit.prevent="formSubmit">
+		<Preloader v-show="isPreload"></Preloader>
+  	<form v-show="!isPreload" class="col s12 l6 offset-l3" @submit.prevent="formSubmit">
   		<!-- <div>isValid {{isValid}}</div> -->
   		<div class="input-field">
   			<input 
@@ -63,6 +53,7 @@
 </template>
 
 <script>
+	import Preloader from '@/components/Preloader.vue'
 	export default {
 		data(){
 			return{
@@ -71,7 +62,13 @@
 				confirm: ''
 			}
 		},
+		components: {
+			Preloader
+		},
 		computed: {
+			error(){
+				return this.$store.getters.getError
+			},
 			isPreload(){
 				return this.$store.getters.getPreloader
 			},
@@ -98,9 +95,13 @@
 		},
 		watch: {
 			user(value){
-				console.log(value)
 				if(value){
 					this.$router.push('/')
+				}
+			},
+			error(value){
+				if(value){
+					this.$error(value)
 				}
 			}
 		},
