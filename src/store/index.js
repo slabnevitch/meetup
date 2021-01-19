@@ -59,17 +59,38 @@ export default new Vuex.Store({
   actions: {
     createMeetup({commit}, payload){
       commit('setPreloader', true)
-      const newMeetup = {...payload}
-      console.log(typeof newMeetup.date)
-      // commit('setNewMeetup', newMeetup)
+      const newMeetup = {
+          title: payload.title,
+          location: payload.location,
+          description: payload.description,
+          date: payload.date,
+          creatorId: payload.creatorId
+        }
+      let imageUrl
+      let key
       
       const pushResult = firebase.database().ref(`meetups/`).push(newMeetup)
-        .then(meetup => {
-          console.log(meetup)
-          commit('setPreloader', false)
+        .then(data => {
+          
+          key = data.key
+          return key
+        })
+        .then(key => {
+          const filename = payload.img.name
+          const ext = filename.slice(filename.lastIndexOf('.'))
+          console.log('meetups/' + key + ext)
+          return firebase.storage().ref('meetups/' + key + ext).put(payload.img)
+        })
+        .then(fileData => {
+          console.log(fileData)
+          imageUrl = fileData.metadata.fullPath
+          return firebase.database().ref('meetups').child(key).update({img: imageUrl})
+        })
+        .then(() => {
           return true
         })
         .catch(e => {
+          console.error(e)
           commit('setError', e.message)
           commit('setPreloader', false)
         })

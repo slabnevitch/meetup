@@ -15,7 +15,7 @@
     				tag="a"
     				v-for="(meet, ind) in meetups"
     				:to="/meetups/+meet.id"
-    				:key="meet.title"
+    				:key="meet.id"
 	    			class="carousel-item _fit" 
 	    			href="#one!">
 	    				<img :src="meet.img">

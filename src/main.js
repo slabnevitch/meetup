@@ -8,6 +8,7 @@ import toastMessages from './utils/messagesPlugin'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 Vue.config.productionTip = false
 Vue.filter('dateFilter', dateFilter)
@@ -27,8 +28,8 @@ new Vue({
   router,
   store,
   created(){
-
   	firebase.initializeApp(firebaseConfig);
+    console.log(firebase.storage().ref())
     // this.$store.dispatch('fetchMeetups')
     firebase.auth().onAuthStateChanged(user => {
     	if(user){
