@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,7 @@ const routes = [
   {
     path: '/create-meetup',
     name: 'Create-meetup',
+    beforeEnter: defendRoute,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -37,6 +39,7 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
+    beforeEnter: defendRoute,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -59,6 +62,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/user/SignUp.vue')
   }
 ]
+
+function defendRoute(to, from, next ) {
+  if(store.getters.getUser){
+    next()
+  }else{
+    next('/signin')
+
+  }
+}
 
 const router = new VueRouter({
   mode: 'history',

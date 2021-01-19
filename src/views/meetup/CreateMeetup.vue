@@ -150,6 +150,7 @@
 					img: this.img, 
 					description: this.description,
 					date: this.dateTimeSumm.toISOString(),
+					creatorId: this.$store.getters.getUser.id
 				}
 				if(this.isValid){
 					console.log('isValid!')

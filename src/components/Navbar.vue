@@ -11,6 +11,15 @@
               {{link.text}}
           </router-link>
           </li>
+          <li v-show="isAuthenticated">
+            <a 
+              href="#" 
+              @click.prevent="$store.dispatch('signout')"
+              >
+                 <i class="material-icons left">exit_to_app</i>
+                 Выйти
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -22,6 +31,15 @@
          {{link.text}}
        </router-link>
      </li>
+     <li v-show="isAuthenticated">
+      <a 
+        href="#" 
+        @click.prevent="$store.dispatch('signout')"
+        >
+          <i class="material-icons left">exit_to_app</i>
+          Выйти
+    </a>
+  </li>
    </ul>  
     
   </div>
@@ -30,6 +48,11 @@
 <script>
 export default {
   name: 'Navbar',
+  data(){
+    return{
+      sidenav: null
+    }
+  },
   computed:{
     menuItems(){
       if(this.isAuthenticated){
@@ -74,7 +97,7 @@ export default {
   },
   mounted(){
     // var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(this.$refs.sidenav, {});
+    this.sidenav = M.Sidenav.init(this.$refs.sidenav, {});
   }
 }
 </script>

@@ -30,6 +30,11 @@ new Vue({
 
   	firebase.initializeApp(firebaseConfig);
     // this.$store.dispatch('fetchMeetups')
+    firebase.auth().onAuthStateChanged(user => {
+    	if(user){
+    		this.$store.commit('setUserAuto', user)
+    	}
+    })
   },
   render: h => h(App)
 }).$mount('#app')

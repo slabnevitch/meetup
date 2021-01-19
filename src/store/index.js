@@ -40,6 +40,12 @@ export default new Vuex.Store({
     setNewUser(state, payload){
       state.user = payload
     },
+    setUserAuto(state, payload){
+      state.user = {id: payload.uid,  registerdMeetups: []}
+    },
+    clearUser(state){
+      state.user = null
+    },
     setPreloader(state, payload){
       state.preloader = payload
     },
@@ -139,7 +145,10 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
-
+    signout({commit}){
+      firebase.auth().signOut()
+      commit('clearUser')
+    }
   },
   getters: {
   	getMeetups: (state) => state.meetups.sort((a, b) => a.date - b.date),
