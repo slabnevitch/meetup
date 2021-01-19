@@ -47,7 +47,7 @@
 	  			v-model="time">
   			<label for="timeepick"">Время начала мероприятия*</label>
   		</div>
-  		<div class="input-field">
+  		<!-- <div class="input-field">
   			<input 
 	  			id="img-url" 
 	  			type="text" 
@@ -55,11 +55,20 @@
 	  			required
 	  			v-model="img">
   			<label for="img-url">url-адрес изображения*</label>
+  		</div> -->
+  		<div class="file-field input-field">
+  			<div class="btn">
+  				<span>File</span>
+  				<input type="file" accept="image/*"  @change="imgSelect">
+  			</div>
+  			<div class="file-path-wrapper">
+  				<input class="file-path validate" type="text">
+  			</div>
   		</div>
   		<div 
-  			v-show="img != ''"
+  			v-show="imgUrl !== ''"
   			class="loaded-img _fit">
-  			<img :src="img" alt="alt">
+  			<img :src="imgUrl" alt="alt">
   		</div>
   		<div class="input-field col s12">
           <textarea 
@@ -85,7 +94,8 @@
 			return{
 				title: '',
 				location: '',
-				img: '',
+				img: null,
+				imgUrl: '',
 				description: '',
 				// datePick: "",
 				date: '',
@@ -111,7 +121,7 @@
 			isValid(){
 				return this.title != '' &&
 					this.location != '' &&
-					this.img != '' &&
+					this.imgUrl != '' &&
 					this.date != '' &&
 					this.time != ''
 					// this.description != ''
@@ -143,6 +153,23 @@
 			}
 		},
 		methods: {
+			imgSelect(e){
+				console.log(e.target.files[0])
+				let file = e.target.files[0],
+					filename = file.name;
+
+				if(filename.lastIndexOf('.') <= 0){
+					return alert('прикрепите файл с правильным форматом')
+				}
+
+				let reader = new FileReader()
+				reader.readAsDataURL(file);
+
+				reader.onload = () => {
+			   	 	this.imgUrl = reader.result
+			  	};
+			  	this.img = file
+			},
 			async formSubmit(){
 				const meetup = {
 					title: this.title,
