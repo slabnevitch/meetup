@@ -2,7 +2,8 @@
 	<div>
 		<a class="waves-effect waves-light btn modal-trigger" href="#modal-edit">Редактировать</a>
 		<div id="modal-edit" class="modal" ref="modal">
-	    <form class="modal-content" @submit.prevent="formSubmit">
+			<Preloader v-if="isLoading"></Preloader>
+	    <form v-else class="modal-content" @submit.prevent="formSubmit">
 	    		<div class="input-field">
 	    			<input 
 	    			id="title" 
@@ -27,8 +28,8 @@
 	    		class="waves-effect waves-light btn-large"
 	    		>Войти</button> -->
 			    <div class="input-field col s12 modal-footer">
-			      <a href="#!" class="modal-close waves-effect waves-green btn">Да</a>
-			      <a href="#!" class="modal-close waves-effect waves-green btn">Отмена</a>
+			      <button type="submit" class="waves-effect waves-green btn-flat">Да</button>
+			      <button class="modal-close waves-effect waves-green btn-flat">Отмена</button>
 			    </div>
 	    	</form>
 
@@ -48,9 +49,29 @@
 				editedDescription: ''
 			}
 		},
+		computed: {
+			isLoading(){
+				return this.$store.getters.getPreloader
+
+			}
+		},
 		methods: {
 				formSubmit(){
+					const dkoenik = {
+						title: this.editedTitle, 
+						description: this.editedDescription,
+						creatorId: this.meetup.creatorId,
+						id: this.meetup.id
+					}
+					console.log(dkoenik)
 
+					this.$store.dispatch('editMeetup', {
+						title: this.editedTitle, 
+						description: this.editedDescription,
+						creatorId: this.meetup.creatorId,
+						id: this.meetup.id
+					})
+					this.modal.close()
 				}
 		},
 		mounted(){
@@ -64,4 +85,3 @@
 
 	}
 </script>
-

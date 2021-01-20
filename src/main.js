@@ -9,10 +9,12 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
+import Preloader from '@/components/Preloader.vue'
 
 Vue.config.productionTip = false
 Vue.filter('dateFilter', dateFilter)
 Vue.use(toastMessages)
+Vue.component('Preloader', Preloader)
 
 var firebaseConfig = {
     apiKey: "AIzaSyBW1GZGjDHHmOCSvzMZ_wBQAIlc5FCKcZY",
@@ -29,7 +31,6 @@ new Vue({
   store,
   created(){
   	firebase.initializeApp(firebaseConfig);
-    console.log(firebase.storage().ref())
     // this.$store.dispatch('fetchMeetups')
     firebase.auth().onAuthStateChanged(user => {
     	if(user){

@@ -78,14 +78,14 @@ export default new Vuex.Store({
         .then(key => {
           const filename = payload.img.name
           const ext = filename.slice(filename.lastIndexOf('.'))
-          console.log('meetups/' + key + ext)
+
           return firebase.storage().ref('meetups/' + key + ext).put(payload.img)
         })
         .then(fileData => {
           return fileData.ref.getDownloadURL()
         })
         .then((pathToImg) => {
-          return firebase.database().ref('meetups').child(key).update({img: pathToImg})
+          return firebase.database().ref('meetups/').child(key).update({img: pathToImg, id: key})
         })
         .then(() => {
           return true
@@ -98,6 +98,22 @@ export default new Vuex.Store({
 
       return pushResult
     },
+    editMeetup({commit, dispatch}, payload){
+      commit('setPreloader', true)
+      const maximilian = {
+        title: payload.title,
+        description: payload.description
+      }
+
+      firebase.database().ref('meetups').child(payload.id).update(maximilian)
+        .then(response => {
+          dispatch('fetchMeetups')
+          commit('setPreloader', false)
+        })
+        .catch(e => {
+          commit('setError', e.message)
+        })
+    },
     fetchMeetups({commit}){
       commit('setPreloader', true)
 
@@ -109,7 +125,6 @@ export default new Vuex.Store({
             id: key
           }))
 
-          console.log(meetups)
           commit('setFetchedMeetups', meetups)
           commit('setPreloader', false)
         })
@@ -121,15 +136,13 @@ export default new Vuex.Store({
       return readyMeetups
     },
     signup({commit}, payload){
-      console.log(payload)
 
       commit('clearError')
       commit('setPreloader', true)
 
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then( user => { 
-          console.log(user)
-          console.log(user.user.uid)
+          
           const newUser = {
             id: user.user.uid,
             registerdMeetups: []
@@ -141,7 +154,6 @@ export default new Vuex.Store({
         .catch(function(error) {
           commit('setError', error.message)
           commit('setPreloader', false)
-          console.log(error);
         });
     },
     signin({commit}, payload){
@@ -151,8 +163,7 @@ export default new Vuex.Store({
 
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then( user => { 
-          console.log(user)
-          console.log(user.user.uid)
+
           const newUser = {
             id: user.user.uid,
             registerdMeetups: []
@@ -164,7 +175,6 @@ export default new Vuex.Store({
         .catch(function(error) {
           commit('setError', error.message)
           commit('setPreloader', false)
-          console.log(error);
         });
     },
     signout({commit}){

@@ -1,10 +1,13 @@
 <template>
 	<div class="row">
 		<div class="col s12">
-			<div class="card single-card">
-				<div class="edit-wrap">
+			<Preloader v-if="isPreload"></Preloader>
+			<div class="card single-card" v-else>
+				<div class="edit-wrap" v-show="isAuthorized">
 					
-					<MeetupEditDialog :meetup="meetup"></MeetupEditDialog>
+					<MeetupEditDialog 
+						:meetup="meetup"
+						></MeetupEditDialog>
 				</div>
 				<div class="card-image _fit">
 					<img :src="meetup.img">
@@ -33,6 +36,12 @@
 		computed: {
 			meetup(){
 				return this.$store.getters.getLoadedMeetup(this.$route.params.id)
+			},
+			isAuthorized(){
+				return this.$store.getters.getUser
+			},
+			isPreload(){
+				return this.$store.getters.getPreloader
 			}
 		},
 		created(){

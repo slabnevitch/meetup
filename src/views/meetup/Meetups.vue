@@ -17,7 +17,6 @@
   				<div class="card-content">
   					<div class="card-title">{{meetup.title}}</div>
   					<span class="badge">{{new Date(meetup.date) | dateFilter}}</span>
-  					<!-- <p>I am a very simple card. I am good at containing small bits of information.</p> -->
   				</div>
   				<div class="card-action">
   					<a href="#" @click.prevent="$router.push('/meetups/'+meetup.id)">Подробнее</a>
@@ -45,7 +44,6 @@
 			Preloader
 		},
 		created(){
-			console.log('meetups mounted')
 			this.$store.dispatch('fetchMeetups')
 		}
 	}
