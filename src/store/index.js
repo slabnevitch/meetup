@@ -82,9 +82,10 @@ export default new Vuex.Store({
           return firebase.storage().ref('meetups/' + key + ext).put(payload.img)
         })
         .then(fileData => {
-          console.log(fileData)
-          imageUrl = fileData.metadata.fullPath
-          return firebase.database().ref('meetups').child(key).update({img: imageUrl})
+          return fileData.ref.getDownloadURL()
+        })
+        .then((pathToImg) => {
+          return firebase.database().ref('meetups').child(key).update({img: pathToImg})
         })
         .then(() => {
           return true

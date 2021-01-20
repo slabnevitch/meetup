@@ -2,6 +2,10 @@
 	<div class="row">
 		<div class="col s12">
 			<div class="card single-card">
+				<div class="edit-wrap">
+					
+					<MeetupEditDialog :meetup="meetup"></MeetupEditDialog>
+				</div>
 				<div class="card-image _fit">
 					<img :src="meetup.img">
 					<span class="card-title">{{meetup.title}}</span>
@@ -21,11 +25,18 @@
 </template>
 
 <script>
+	import MeetupEditDialog from '@/components/MeetupEditDialog'
 	export default {
+		components: {
+			MeetupEditDialog
+		},
 		computed: {
 			meetup(){
 				return this.$store.getters.getLoadedMeetup(this.$route.params.id)
 			}
+		},
+		created(){
+			this.$store.dispatch('fetchMeetups')
 		}
 	}
 </script>
@@ -55,5 +66,8 @@
 	}
 	.card.horizontal .card-image img{
 		width: 100%;
+	}
+	.edit-wrap{
+		padding: 15px;	
 	}
 </style>
