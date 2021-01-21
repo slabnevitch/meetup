@@ -41,7 +41,36 @@ export default new Vuex.Store({
       state.user = payload
     },
     setUserAuto(state, payload){
-      state.user = {id: payload.uid,  registerdMeetups: []}
+      state.user = {id: payload.uid,  registeredMeetups: []}
+      console.log('setUserAuto!')
+    },
+    setRegisteredMeetup(state, payload){
+      // console.log(payload)
+      if(state.user.registeredMeetups.indexOf(payload.id) > 0){
+        return
+      }
+      state.user.registeredMeetups.push(payload.id)
+
+      if(!state.user.fbKeys){
+        state.user.fbKeys = {}
+      }
+      state.user.fbKeys[payload.id] = payload.fbKey
+    },
+    setUnregisteredMeetup(state, payload){
+      state.user.registeredMeetups.splice(state.user.registeredMeetups.indexOf(payload), 1)
+      Reflect.deleteProperty(state.user.fbKeys, payload);
+      // state.user.fbKeys[payload.id] = payload.fbKey
+    },
+    setFetchedMeetup(state, payload){
+      // console.log(payload)
+      state.user.registeredMeetups = Object.values(payload)
+      
+      if(!state.user.fbKeys){
+        state.user.fbKeys = {}
+      }
+      for(var key in payload){
+        state.user.fbKeys[payload[key]] = key
+      }
     },
     clearUser(state){
       state.user = null
@@ -57,6 +86,67 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    registrationForMeetup({commit, getters}, payload){
+      commit('setPreloader', true)
+
+      if(getters.getUser.registeredMeetups.indexOf(payload) > -1 ){
+        commit('setPreloader', false)
+        return
+      }
+
+      firebase.database().ref('users/' + getters.getUser.id + '/registeredMeetups/').push(payload)
+        .then( response => {
+          console.log(response )
+          const newRegisterdeMeetup = {
+            id: payload,
+            fbKey: response.key
+          }
+          commit('setRegisteredMeetup', newRegisterdeMeetup)
+          commit('setPreloader', false)
+        })
+        .catch(e => {
+          console.error(e)
+          commit('setError', e.message)
+        })
+    },
+    unregistrationFromMeetup({commit, getters}, payload){
+      commit('setPreloader', true)
+
+      if(getters.getUser.registeredMeetups.indexOf(payload) == -1 ){
+        commit('setPreloader', false)
+        return
+      }
+
+      const target = getters.getUser.fbKeys[payload]
+      // console.log(target)
+
+       firebase.database().ref(`users/${getters.getUser.id}/registeredMeetups/`).child(target).remove()
+        .then(response => {
+          commit('setUnregisteredMeetup', payload)
+          commit('setPreloader', false)
+        })
+        .catch(e => {
+          console.error(e)
+          commit('setError', e.message)
+        })
+    },
+    fetchRegisteredMeetups({commit, getters}, payload){
+      commit('setPreloader', true)
+
+      firebase.database().ref('/users/' + getters.getUser.id + '/registeredMeetups/').once('value')
+        .then( responce => {
+          const meetupsObj =  responce.val() || {}
+
+          console.log(meetupsObj)
+
+          commit('setFetchedMeetup', meetupsObj)
+          commit('setPreloader', false)
+        })
+        .catch(e => {
+          console.error(e)
+          commit('setError', e.message)
+        })
+    },
     createMeetup({commit}, payload){
       commit('setPreloader', true)
       const newMeetup = {
@@ -145,7 +235,7 @@ export default new Vuex.Store({
           
           const newUser = {
             id: user.user.uid,
-            registerdMeetups: []
+            registeredMeetups: []
           }
           
           commit('setNewUser', newUser)
@@ -186,7 +276,7 @@ export default new Vuex.Store({
   	getMeetups: (state) => state.meetups.sort((a, b) => a.date - b.date),
   	getFeaturedMeetups: (state, getters) => getters.getMeetups.slice(0, 5),
   	getLoadedMeetup: (state) => (meetupId) => state.meetups.find(meetup => meetup.id.toString() === meetupId), //идет обращение к геттеру не как к к свойству, а как к ф-ции.
-    
+       
     getUser: (state) => state.user,
     
     getPreloader: (state) => state.preloader,

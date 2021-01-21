@@ -80,7 +80,7 @@ export default {
           {
             text: 'Зарегистрироваться',
             icon: 'face',
-            to: 'signup'
+            to: '/signup'
           },
           {
             text: 'Войти',

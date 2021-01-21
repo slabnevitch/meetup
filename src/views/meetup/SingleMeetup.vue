@@ -1,11 +1,12 @@
 <template>
 	<div class="row">
 		<div class="col s12">
+			<!-- <p>{{meetup}}</p> -->
 			<Preloader v-if="isPreload"></Preloader>
 			<div class="card single-card" v-else>
-				<div class="edit-wrap" v-show="isAuthorized">
+				<div class="edit-wrap" v-show="isCreator">
 					
-					<MeetupEditDialog 
+					<MeetupEditDialog
 						:meetup="meetup"
 						></MeetupEditDialog>
 				</div>
@@ -18,8 +19,12 @@
 					<p class="meet-date">Место: <b>{{meetup.location}}</b></p>
 					<p>{{meetup.description}}</p>
 				</div>
-				<div class="card-action right-align">
-					<a class="waves-effect waves-light btn-large red lighten-1">Зарегистрироваться</a>
+				<div class="card-action right-align" v-show="isAuthorized">
+					<a class="waves-effect waves-light btn-large red lighten-1" 
+						@click.prevent="unRegister"
+						v-if="isRegisteredForMeetup"
+						>Отменить регистрацию</a>
+					<a v-else class="waves-effect waves-light btn-large red lighten-1" @click.prevent="register">Зарегистрироваться</a>
 				</div>
 			</div>
 		</div>
@@ -30,6 +35,12 @@
 <script>
 	import MeetupEditDialog from '@/components/MeetupEditDialog'
 	export default {
+		data(){
+			return{
+				// isRegisteredForMeetup: false
+
+			}
+		},
 		components: {
 			MeetupEditDialog
 		},
@@ -42,10 +53,35 @@
 			},
 			isPreload(){
 				return this.$store.getters.getPreloader
+			},
+			isRegisteredForMeetup(){
+				if(this.isAuthorized){
+					return this.$store.getters.getUser.registeredMeetups.indexOf(this.$route.params.id) >= 0
+
+				}
+			},
+			isCreator(){
+				if(this.isAuthorized){
+					return this.meetup.creatorId === this.$store.getters.getUser.id
+				}
+			}
+		},
+		methods: {
+			register(){
+				console.log(this.meetup.id)
+				console.log(this.meetup.creatorId)
+				this.$store.dispatch('registrationForMeetup', this.meetup.id)
+			},
+			unRegister(){
+				this.$store.dispatch('unregistrationFromMeetup', this.meetup.id)
 			}
 		},
 		created(){
 			this.$store.dispatch('fetchMeetups')
+			console.log('created in singleMeetup!')
+		},
+		mounted(){
+			// this.isRegisteredForMeetup = this.$store.getters.getUser.registeredMeetups.indexOf(this.meetup.id) >= 0
 		}
 	}
 </script>

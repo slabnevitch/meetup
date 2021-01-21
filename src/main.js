@@ -31,10 +31,11 @@ new Vue({
   store,
   created(){
   	firebase.initializeApp(firebaseConfig);
-    // this.$store.dispatch('fetchMeetups')
+    console.log('created in main.js!')
     firebase.auth().onAuthStateChanged(user => {
     	if(user){
     		this.$store.commit('setUserAuto', user)
+        this.$store.dispatch('fetchRegisteredMeetups')
     	}
     })
   },
