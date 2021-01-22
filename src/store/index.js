@@ -276,7 +276,12 @@ export default new Vuex.Store({
   	getMeetups: (state) => state.meetups.sort((a, b) => a.date - b.date),
   	getFeaturedMeetups: (state, getters) => getters.getMeetups.slice(0, 5),
   	getLoadedMeetup: (state) => (meetupId) => state.meetups.find(meetup => meetup.id.toString() === meetupId), //идет обращение к геттеру не как к к свойству, а как к ф-ции.
-       
+    getRegisteredMeetups: (state, getters) => {
+      return getters.getMeetups.filter(meetup => {
+          let id = meetup.id
+          return getters.getUser.registeredMeetups.indexOf(id) > -1 ? true : false
+        })
+    },   
     getUser: (state) => state.user,
     
     getPreloader: (state) => state.preloader,
