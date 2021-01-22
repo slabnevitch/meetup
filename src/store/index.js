@@ -190,10 +190,20 @@ export default new Vuex.Store({
     },
     editMeetup({commit, dispatch}, payload){
       commit('setPreloader', true)
-      const maximilian = {
-        title: payload.title,
-        description: payload.description
+
+      const maximilian = {}
+
+      if(payload.title){
+        maximilian.title = payload.title
       }
+      if(payload.title){
+        maximilian.description = payload.description
+      }
+      if(payload.date){
+        maximilian.date = payload.date
+      }
+
+      console.log(maximilian)
 
       firebase.database().ref('meetups').child(payload.id).update(maximilian)
         .then(response => {

@@ -37,5 +37,9 @@ export default {
     object-fit: cover; 
     object-position: center center;
   }
+  .picker-wrapper{
+    display: inline-block;
+    margin-right: 5px;
+  }
 
 </style>

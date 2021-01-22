@@ -15,6 +15,11 @@
 					<span class="card-title">{{meetup.title}}</span>
 				</div>
 				<div class="card-content">
+					<div class="edit-wrap">
+						<MeetupDateEditDialog :meetup="meetup"></MeetupDateEditDialog>
+						<MeetupTimeEditDialog :meetup="meetup"></MeetupTimeEditDialog>
+						<!-- <a class="waves-effect waves-light btn-small">Изменить время</a> -->
+					</div>
 					<p class="meet-date">Дата: <b>{{meetup.date | dateFilter}}</b></p>
 					<p class="meet-date">Место: <b>{{meetup.location}}</b></p>
 					<p>{{meetup.description}}</p>
@@ -34,6 +39,8 @@
 
 <script>
 	import MeetupEditDialog from '@/components/MeetupEditDialog'
+	import MeetupDateEditDialog from '@/components/MeetupDateEditDialog'
+	import MeetupTimeEditDialog from '@/components/MeetupTimeEditDialog'
 	export default {
 		data(){
 			return{
@@ -42,7 +49,9 @@
 			}
 		},
 		components: {
-			MeetupEditDialog
+			MeetupEditDialog,
+			MeetupTimeEditDialog,
+			MeetupDateEditDialog
 		},
 		computed: {
 			meetup(){
@@ -78,10 +87,9 @@
 		},
 		created(){
 			this.$store.dispatch('fetchMeetups')
-			console.log('created in singleMeetup!')
 		},
 		mounted(){
-			// this.isRegisteredForMeetup = this.$store.getters.getUser.registeredMeetups.indexOf(this.meetup.id) >= 0
+
 		}
 	}
 </script>

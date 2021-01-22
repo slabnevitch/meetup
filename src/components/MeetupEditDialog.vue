@@ -29,7 +29,7 @@
 	    		>Войти</button> -->
 			    <div class="input-field col s12 modal-footer">
 			      <button type="submit" class="waves-effect waves-green btn-flat">Да</button>
-			      <button class="modal-close waves-effect waves-green btn-flat">Отмена</button>
+			      <a href="#" class="modal-close waves-effect waves-green btn-flat">Отмена</a>
 			    </div>
 	    	</form>
 
@@ -76,9 +76,16 @@
 		},
 		mounted(){
 			this.modal = M.Modal.init(this.$refs.modal, {})
+
+			setTimeout(() => {
+				M.updateTextFields();
+			}, 0)
+
+			this.editedTitle = this.meetup.title
+			this.editedDescription = this.meetup.description
 		},
 		destroyed(){
-			if(this.modal){
+			if(this.modal && this.modal.destroy){
 				this.modal.destroy()
 			}
 		}
