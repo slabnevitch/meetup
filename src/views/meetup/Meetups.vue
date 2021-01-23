@@ -1,7 +1,7 @@
 <template>
   <div class="row">
   	<div class="col s12">
-    	<h1 class="header">Список мероприятий</h1>  		
+    	<h3 class="header">Список мероприятий</h3>  		
   	</div>
   	<Preloader v-if="isPreload"></Preloader>
   	<div b-else class="col s12">
@@ -50,6 +50,9 @@
 </script>
 
 <style lang="scss">
+	  @import '../../assets/scss/_mixins';
+	@import '../../assets/scss/_media-mixins';
+
 	.card.horizontal .card-image{
 		max-width: 300px;
 		width: 100%;
@@ -61,6 +64,11 @@
 			left: 0;
 			top: 0;
 			width: 100%;
+		}
+
+		@include max-screen(768px){
+			max-width: 100%;
+			padding-bottom: 52.25%;
 		}
 	}
 	span.badge{

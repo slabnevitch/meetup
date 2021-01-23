@@ -22,6 +22,7 @@ export default {
 <style lang="scss">
   @import '~materialize-css/dist/css/materialize.min.css';
   @import './assets/scss/_mixins';
+  @import './assets/scss/_media-mixins';
 
   body{
     overflow: auto !important;
@@ -51,6 +52,18 @@ export default {
     .input-field>label:not(.label-icon).active {
       position: relative;
       transform:none;
+    }
+
+    @include max-screen(600px){
+      margin-bottom: 10px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    
+  }
+  .card.horizontal{
+    @include max-screen(768px){
+      flex-direction: column;
     }
   }
 

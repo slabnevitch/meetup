@@ -95,11 +95,21 @@
 </script>
 
 <style lang="scss">
+	 @import '../../assets/scss/_mixins';
+  	@import '../../assets/scss/_media-mixins';
 	.single-card{
 		margin-top: 30px;
 	}
 	.single-card .card-title{
 		background-color: rgba(#000, .7);
+	}
+	.card .card-image .card-title{
+		@include max-screen(600px){
+			white-space: nowrap;
+			font-size: 16px;
+			padding: 15px;
+		}
+		
 	}
 	.card .card-content p.meet-date{
 		margin-bottom: 15px;

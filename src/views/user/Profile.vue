@@ -1,7 +1,7 @@
 <template>
   <div class="row">
   	<div class="col s12">
-    		<h3>Профиль пользователя</h3>
+    	<h3>Профиль пользователя</h3>
   	</div>
   	<div class="col s12 l6">
   		<ul class="collection with-header">
