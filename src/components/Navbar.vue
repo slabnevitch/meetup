@@ -20,10 +20,19 @@
                  Выйти
             </a>
           </li>
+          <li v-show="isAuthenticated">
+            <a class='dropdown-trigger' href='#' data-target='dropdown1' ref="dropdownToggle"><img src="../assets/img/ru.svg"></a>
+            <ul id='dropdown1' class='dropdown-content'>
+              <li><a href="#!"><img src="../assets/img/ru.svg"></a></li>
+              <li><a href="#!"><img src="../assets/img/gb.svg"></a></li>
+
+            </ul>
+          </li>
         </ul>
       </div>
     </nav>
 
+    <!-- SIDENAV -->
     <ul class="sidenav main-menu" ref="sidenav" id="mobile-demo">
        <li v-for="(link, ind) in menuItems" :key="ind">
         <router-link :to="link.to" tag="a" class="sidenav-close">
@@ -36,10 +45,11 @@
         href="#" 
         @click.prevent="$store.dispatch('signout')"
         >
-          <i class="material-icons left">exit_to_app</i>
-          Выйти
-    </a>
-  </li>
+        <i class="material-icons left">exit_to_app</i>
+        Выйти
+      </a>
+    </li>
+
    </ul>  
     
   </div>
@@ -50,7 +60,8 @@ export default {
   name: 'Navbar',
   data(){
     return{
-      sidenav: null
+      sidenav: null,
+      dropdown: null
     }
   },
   computed:{
@@ -98,6 +109,20 @@ export default {
   mounted(){
     // var elems = document.querySelectorAll('.sidenav');
     this.sidenav = M.Sidenav.init(this.$refs.sidenav, {});
+
+    this.dropdown= M.Dropdown.init(this.$refs.dropdownToggle, {
+      onCloseEnd: function() {
+        console.log(this)
+      }
+    });
+  },
+  destroyed(){
+    if(this.sidenav){
+      this.sidenav.destroy()
+    }
+    if(this.dropdow){
+      this.dropdow.destroy()
+    }
   }
 }
 </script>
