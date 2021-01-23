@@ -54,14 +54,14 @@ export default {
   async mounted(){
   	await this.$store.dispatch('fetchMeetups')
   	console.log('fetchMeetups loaded ')
-  	setTimeout(() => {
+  	// setTimeout(() => {
 		this.instances = M.Carousel.init(this.$refs.carousel, {
 	    	dist: 0,
 	    	indicators: true,
 	    	fullWidth: true,
 	    	numVisible: 1
 	    });
-    }, 0)
+    // }, 0)
     
   },
   destroyed(){
@@ -83,7 +83,6 @@ export default {
 		}
 	}
 	.carousel .carousel-item{
-		// visibility: visible; 
 		height: 0;
 		width: 100%;
 		display: block;
@@ -94,16 +93,18 @@ export default {
 		left: 0;
 	}
 	.carousel-item__title{
-		position: absolute;
+		position: relative;
 		padding: 15px 30px;
 		font-weight: bold;
 		left: 0;
-		bottom: 50px;
+		// bottom: 50px;
+		display: block;	
 		// border-bottom: 1px solid #fff;
 		width: 100%;
 		// @include adaptive-font(40px, 18px);
 		color: #fff;
 		background-color: rgba(#000, .6);
+		z-index: 1;	
 	}
 	.carousel .indicators{
 

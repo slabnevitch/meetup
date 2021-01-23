@@ -1,17 +1,21 @@
 <template>
 	<div class="picker-wrapper">
-			<label>
-				<input 
-				ref="datepicker"
-				id="datepick" 
-				type="text" 
-				class="datepicker"
-				required
-				v-model="editedDate">
+		<!-- {{this.editedDate}} -->
+		<div class="input-field">
+			<input 
+			ref="datepicker"
+			id="datepick" 
+			type="text" 
+			class="datepicker"
+			required
+			v-model="editedDate">
 
+			<label for="datepicker">
 				<a class="waves-effect waves-light btn-small" href="#modal-date-edit"
 					@click.prevent="datePicker.open()">Изменить дату</a>
 			</label>
+		
+		</div>
 		
 	</div>
 </template>
@@ -40,13 +44,28 @@
 		mounted(){
 			console.log(this.meetup)
 			this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
-				defaultDate: new Date(this.meetup.date),
+				defaultDate: new Date(this.editedDate),
 				setDefaultDate: true,
-				autoClose: true,
+				// autoClose: true,
 				onSelect: (date) => {
 					this.editedDate = date
+				},
+				onClose: () => {
+					// const newDate = new Date(this.meetup.date)
+					const newDate = new Date(this.editedDate)
+					// const newDay = new Date(this.editedDate).getUTCDate()
+					// const newMonth = new Date(this.editedDate).getUTCMonth()
+					// const newYear = new Date(this.editedDate).getUTCFullYear()
+
+					// newDate.setUTCDate(newDay) 
+					// newDate.setUTCMonth(newMonth)
+					// newDate.setUTCFullYear(newYear)
+
+					newDate.setHours(new Date(this.meetup.date).getHours())
+					newDate.setMinutes(new Date(this.meetup.date).getMinutes())
+
 					this.$store.dispatch('editMeetup', {
-						date: this.editedDate,
+						date: newDate,
 						id: this.meetup.id,
 					})
 				}
@@ -63,7 +82,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.modal-edit-date{
 		overflow: visible;
 	}

@@ -1,6 +1,8 @@
 <template>
 	<div class="picker-wrapper">
-			<label>
+		<!-- <p>{{this.fullTime.hours}}</p>
+		<p>{{this.fullTime.minutes}}</p> -->
+		<div class="input-field">
 				<input
   				ref="timepicker" 
 	  			type="text"
@@ -9,9 +11,12 @@
 	  			required
 	  			v-model="EditedTime">
 
+			<label for="timeepick">
 				<a class="waves-effect waves-light btn-small" href="#modal-date-edit"
 					@click.prevent="timePicker.open()">Изменить время</a>
 			</label>
+		
+		</div>
 		
 	</div>
 </template>
@@ -23,7 +28,12 @@
 		data(){
 			return{
 				timePicker: null,
-				EditedTime: ''
+				EditedTime: '',
+				fullTime: {
+					hours: '',
+					minutes: ''
+				},
+				hasBeenChange: false
 			}
 		},
 		computed: {
@@ -32,24 +42,39 @@
 			}
 		},
 		methods: {
+			sendNewDate(){
 
+			}
 		},
 		created(){
-			this.editedDate = this.meetup.date
+			this.fullTime.hours = new Date(this.meetup.date).getHours()
+			this.fullTime.minutes = new Date(this.meetup.date).getMinutes()
 		},
 		mounted(){
 			this.timePicker = M.Timepicker.init(this.$refs.timepicker, {
 				twelveHour:false,
 				autoClose: false,
+				defaultTime: this.fullTime.hours +':'+ this.fullTime.minutes,
 				onSelect: (hour, minute) => {
-					// const date = new Date(this.meetup.date)
-					// console.log(date)
-					// date.toUTCString().setHours(hour)
-					// date.toUTCString().setMinutes(minute)
+					this.fullTime.hours = hour
+					this.fullTime.minutes = minute
 
-					// this.hoursAndMinutes.hours = hour
-					// this.hoursAndMinutes.minutes = minute
-					// this.time = hour + ':' + minute
+					this.hasBeenChange = true
+				},
+				onCloseEnd: () => {
+					if(this.hasBeenChange == true){
+						const date = new Date(this.meetup.date)
+						date.setHours(this.fullTime.hours)
+						date.setMinutes(this.fullTime.minutes)
+						console.log(date)
+
+						this.$store.dispatch('editMeetup', {
+							date: date,
+							id: this.meetup.id,
+						})
+
+					}
+					this.hasBeenChange = false
 				}
 			})
 		},
@@ -62,12 +87,13 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	.modal-edit-date{
 		overflow: visible;
 	}
-	/*.timepicker{
+	.timepicker{
 		position: absolute;
 		left: -9999px;
-	}*/
+
+	}
 </style>

@@ -15,7 +15,7 @@
 					<span class="card-title">{{meetup.title}}</span>
 				</div>
 				<div class="card-content">
-					<div class="edit-wrap">
+					<div class="edit-wrap" v-show="isCreator">
 						<MeetupDateEditDialog :meetup="meetup"></MeetupDateEditDialog>
 						<MeetupTimeEditDialog :meetup="meetup"></MeetupTimeEditDialog>
 						<!-- <a class="waves-effect waves-light btn-small">Изменить время</a> -->

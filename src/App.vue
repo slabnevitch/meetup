@@ -40,6 +40,18 @@ export default {
   .picker-wrapper{
     display: inline-block;
     margin-right: 5px;
+    vertical-align: top;
+
+    .input-field{
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .input-field>label,
+    .input-field>label:not(.label-icon).active {
+      position: relative;
+      transform:none;
+    }
   }
 
 </style>
