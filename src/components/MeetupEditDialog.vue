@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<a class="waves-effect waves-light btn modal-trigger" href="#modal-edit">Редактировать</a>
+		<a class="waves-effect waves-light btn modal-trigger" href="#modal-edit">{{$t('buttons.edit')}}</a>
 		<div id="modal-edit" class="modal" ref="modal">
 			<Preloader v-if="isLoading"></Preloader>
 	    <form v-else class="modal-content" @submit.prevent="formSubmit">
@@ -11,7 +11,7 @@
 	    			class="validate"
 	    			required
 	    			v-model.trim="editedTitle">
-	    			<label for="title">Название</label>
+	    			<label for="title">{{$t('fields.title')}}</label>
 	    			<!-- <span class="helper-text" data-error="Пожалуйста, введите корректный e-mail"></span> -->
 	    		</div>
 
@@ -20,7 +20,7 @@
 	    			v-model.trim="editedDescription"
 	    			id="textarea1" 
 	    			class="materialize-textarea"></textarea>
-	    			<label for="textarea1">Описание</label>
+	    			<label for="textarea1">{{$t('fields.description')}}</label>
 	    		</div>
 
 	    		<!-- <button 
@@ -28,8 +28,8 @@
 	    		class="waves-effect waves-light btn-large"
 	    		>Войти</button> -->
 			    <div class="input-field col s12 modal-footer">
-			      <button type="submit" class="waves-effect waves-green btn-flat">Да</button>
-			      <a href="#" class="modal-close waves-effect waves-green btn-flat">Отмена</a>
+			      <button type="submit" class="waves-effect waves-green btn-flat">{{$t('buttons.ok')}}</button>
+			      <a href="#" class="modal-close waves-effect waves-green btn-flat">{{$t('buttons.cancel')}}</a>
 			    </div>
 	    	</form>
 

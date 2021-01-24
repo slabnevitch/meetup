@@ -8,6 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+      locale: 'ru',
   		meetups: [
   			// {
   			// 	title: "Киев. Праздник на октябрьской площади",
@@ -83,6 +84,9 @@ export default new Vuex.Store({
     },
     clearError(state){
       state.error = null
+    },
+    setLocale(state, payload){
+      state.locale = payload
     }
   },
   actions: {
@@ -295,7 +299,8 @@ export default new Vuex.Store({
     getUser: (state) => state.user,
     
     getPreloader: (state) => state.preloader,
-    getError: (state) => state.error
+    getError: (state) => state.error,
+    getLocale: (state) => state.locale
   },
   modules: {
   }

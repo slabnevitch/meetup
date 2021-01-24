@@ -2,7 +2,7 @@
   <div>
     <nav>
       <div class="nav-wrapper">
-        <router-link to="/" tag="a" class="brand-logo">Мероприятия</router-link>
+        <router-link to="/" tag="a" class="brand-logo">{{ $t('labelName') }}</router-link>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down main-menu">
           <li v-for="(link, ind) in menuItems" :key="ind">
@@ -17,20 +17,26 @@
               @click.prevent="$store.dispatch('signout')"
               >
                  <i class="material-icons left">exit_to_app</i>
-                 Выйти
+                 {{$t('menu.signout')}}
             </a>
           </li>
-          <li v-show="isAuthenticated">
-            <a class='dropdown-trigger' href='#' data-target='dropdown1' ref="dropdownToggle"><img src="../assets/img/ru.svg"></a>
+          <li>
+            <a class='dropdown-trigger' href='#' data-target='dropdown1' ref="dropdownToggle">
+              <i class="material-icons left">arrow_drop_down</i>
+              <img v-if="locale === 'ru'" src="../assets/img/ru.svg">
+              <img v-if="locale === 'en'" src="../assets/img/gb.svg">
+              <!-- <span>skotnik</span> -->
+            </a>
             <ul id='dropdown1' class='dropdown-content'>
-              <li><a href="#!"><img src="../assets/img/ru.svg"></a></li>
-              <li><a href="#!"><img src="../assets/img/gb.svg"></a></li>
+              <li data-locale="ru"><a class="locale-option" @click.prevent="localeChange" href="#!"><img src="../assets/img/ru.svg"></a></li>
+              <li data-locale="en"><a class="locale-option" @click.prevent="localeChange" href="#!"><img src="../assets/img/gb.svg"></a></li>
 
             </ul>
           </li>
         </ul>
       </div>
     </nav>
+      locale:  {{$i18n.locale}}
 
     <!-- SIDENAV -->
     <ul class="sidenav main-menu" ref="sidenav" id="mobile-demo">
@@ -46,8 +52,21 @@
         @click.prevent="$store.dispatch('signout')"
         >
         <i class="material-icons left">exit_to_app</i>
-        Выйти
+        {{$t('menu.signout')}}
       </a>
+    </li>
+    <li>
+      <a class='dropdown-trigger' href='#' data-target='dropdown2' ref="dropdownToggle">
+        <i class="material-icons left">arrow_drop_down</i>
+        <img v-if="locale === 'ru'" src="../assets/img/ru.svg">
+        <img v-if="locale === 'en'" src="../assets/img/gb.svg">
+        <!-- <span>skotnik</span> -->
+      </a>
+      <ul id='dropdown2' class='dropdown-content'>
+        <li data-locale="ru"><a class="locale-option" @click.prevent="localeChange" href="#!"><img src="../assets/img/ru.svg"></a></li>
+        <li data-locale="en"><a class="locale-option" @click.prevent="localeChange" href="#!"><img src="../assets/img/gb.svg"></a></li>
+
+      </ul>
     </li>
 
    </ul>  
@@ -61,7 +80,8 @@ export default {
   data(){
     return{
       sidenav: null,
-      dropdown: null
+      dropdown: null,
+      locale: 'ru'
     }
   },
   computed:{
@@ -69,17 +89,17 @@ export default {
       if(this.isAuthenticated){
         return [
           {
-            text: 'Список Мероприятий',
+            text: this.$t('menu.list'),
             icon: 'supervisor_account',
             to: '/meetups'
           },
           {
-            text: 'Организовать',
+            text: this.$t('menu.create'),
             icon: 'location_on',
             to: '/create-meetup'
           },
           {
-            text: 'Профиль',
+            text: this.$t('menu.profile'),
             icon: 'person',
             to: '/profile'
           }
@@ -89,12 +109,12 @@ export default {
         return [
         
           {
-            text: 'Зарегистрироваться',
+            text: this.$t('menu.signup'),
             icon: 'face',
             to: '/signup'
           },
           {
-            text: 'Войти',
+            text: this.$t('menu.signin'),
             icon: 'lock_open',
             to: '/signin'
           }
@@ -106,13 +126,22 @@ export default {
       return this.$store.getters.getUser
     }
   },
+  methods: {
+    localeChange(e){
+      this.locale = e.target.closest('li').getAttribute('data-locale')
+      console.log(e.target)
+      this.$i18n.locale = this.locale
+      this.$store.commit('setLocale', this.locale)
+    }
+  },
   mounted(){
     // var elems = document.querySelectorAll('.sidenav');
     this.sidenav = M.Sidenav.init(this.$refs.sidenav, {});
 
-    this.dropdown= M.Dropdown.init(this.$refs.dropdownToggle, {
+    var dropdowns = document.querySelectorAll('.dropdown-trigger')
+    this.dropdown = M.Dropdown.init(dropdowns, {
       onCloseEnd: function() {
-        console.log(this)
+        // console.log(this)
       }
     });
   },
@@ -134,5 +163,16 @@ export default {
   }
   .main-menu .router-link-active{
     background-color: rgba(0,0,0,0.1);
+  }
+  .dropdown-trigger{
+    img{
+      width: 30px;
+      vertical-align: middle;
+    }
+  }
+  .locale-option{
+    img{
+      max-width: 50px;
+    }
   }
 </style>

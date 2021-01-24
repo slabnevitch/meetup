@@ -3,10 +3,10 @@
 
     	<div class="col s12 center-align">
         <div class="col s12 center-align meetups-buttons">
-        	<router-link to="/meetups" tag="a" class="waves-effect waves-light btn">просмотр мероприятий</router-link>
-        	<router-link to="/create-meetup" tag="a" class="waves-effect waves-light btn">организовать мероприятие</router-link>
+        	<router-link to="/meetups" tag="a" class="waves-effect waves-light btn">{{$t('buttons.view-meetups')}}</router-link>
+        	<router-link to="/create-meetup" tag="a" class="waves-effect waves-light btn">{{$t('buttons.create-meetup')}}</router-link>
       	</div>
-    		<h4>Присоединяйтесь к нашим замечательным мероприятиям!</h4>
+    		<h4>{{$t('page-headers.carousel-header')}}!</h4>
     		
     		<Preloader v-show="isPreload"></Preloader>
     		

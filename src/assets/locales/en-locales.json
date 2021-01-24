@@ -1,0 +1,74 @@
+{
+	"labelName": "Meetups",
+	"menu": {
+		"list": "Meetups",
+		"create": "Create meetup",
+		"profile": "Profile",
+		"signout": "Signout",
+		"signin": "Signin",
+		"signup": "Signup"
+	},
+	"buttons": {
+		"view-meetups": "view meetups",
+		"create-meetup": "create meetup",
+		"more": "More",
+		"create": "create",
+		"edit": "Edit",
+		"ok": "Ok",
+		"cancel": "Сancel",
+		"edit-date": "Edit date",
+		"edit-time": "Edit time",
+		"registration": "Registration",
+		"cancel-registration": "Cancel registration"
+	},
+	"page-headers": {
+		"carousel-header": "Join our great events!",
+		"meetups-header": "Meetups list",
+		"create-meetup": "Create mew meetup!",
+		"profile": "Profile of user"
+	},
+	"fields": {
+		"title": "Title",
+		"location": "Location",
+		"date": "Date",
+		"time": "Time",
+		"file": "File",
+		"description": "Description"
+	},
+	"your-meetups": "Events created by you:",
+	"your-subscr": "You are subscribed to the following events:",
+	"date": "Date:",
+	"location": "Loc:",
+	"datepicker": {
+		"cancel": "cancel",
+		"done": "ok",
+		"months": [
+		  "January",
+		  "February",
+		  "March",
+		  "April",
+		  "May",
+		  "June",
+		  "July",
+		  "August",
+		  "September",
+		  "October",
+		  "November",
+		  "December"
+		],
+		"monthsShort": [
+		  "Jan",
+		  "Feb",
+		  "Mar",
+		  "Apr",
+		  "May",
+		  "Jun",
+		  "Jul",
+		  "Aug",
+		  "Sep",
+		  "Oct",
+		  "Nov",
+		  "Dec"
+		]		
+	}
+}

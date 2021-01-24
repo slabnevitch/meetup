@@ -12,7 +12,7 @@
 
 			<label for="datepicker">
 				<a class="waves-effect waves-light btn-small" href="#modal-date-edit"
-					@click.prevent="datePicker.open()">Изменить дату</a>
+					@click.prevent="datePicker.open()">{{$t('buttons.edit-date')}}</a>
 			</label>
 		
 		</div>

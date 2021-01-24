@@ -1,7 +1,7 @@
 <template>
   <div class="row">
   	<div class="col s12">
-    	<h3 class="center-align">Создайте новое мероприятие!</h3>
+    	<h3 class="center-align">{{$t('page-headers.create-meetup')}}</h3>
   		<!-- <p>{{isPreload}}</p> -->
   	</div>
 
@@ -16,7 +16,7 @@
 	  			class="validate"
 	  			required
 	  			v-model="title">
-  			<label for="title">Название*</label>
+  			<label for="title">{{$t('fields.title')}}*</label>
   		</div>
   		<div class="input-field">
   			<input 
@@ -25,7 +25,7 @@
 	  			class="validate"
 	  			required
 	  			v-model="location">
-  			<label for="location">Месторасположение*</label>
+  			<label for="location">{{$t('fields.location')}}*</label>
   		</div>
   		<div class="input-field">
   			<input 
@@ -35,7 +35,7 @@
 	  			class="datepicker"
 	  			required
 	  			v-model="date">
-  			<label for="datepick"">Дата мероприятия*</label>
+  			<label for="datepick"">{{$t('fields.date')}}*</label>
   		</div>
   		<div class="input-field">
   			<input
@@ -45,7 +45,7 @@
 	  			class="timepicker"
 	  			required
 	  			v-model="time">
-  			<label for="timeepick"">Время начала мероприятия*</label>
+  			<label for="timeepick"">{{$t('fields.time')}}*</label>
   		</div>
   		<!-- <div class="input-field">
   			<input 
@@ -58,7 +58,7 @@
   		</div> -->
   		<div class="file-field input-field">
   			<div class="btn">
-  				<span>File</span>
+  				<span>{{$t('fields.file')}}</span>
   				<input type="file" accept="image/*"  @change="imgSelect">
   			</div>
   			<div class="file-path-wrapper">
@@ -75,13 +75,13 @@
           		v-model="description"
 	          id="textarea1" 
 	          class="materialize-textarea"></textarea>
-          <label for="textarea1">Описание</label>
+          <label for="textarea1">{{$t('fields.description')}}</label>
         </div>
         <button 
 	        type="submit" 
 	        :disabled="!isValid" 
 	        class="waves-effect waves-light btn-large"
-	        >Создать</button>
+	        >{{$t('buttons.create')}}</button>
     </form>
   </div>
 </template>
@@ -136,6 +136,9 @@
 				dateFull.setHours(this.hoursAndMinutes.hours)
 				dateFull.setMinutes(this.hoursAndMinutes.minutes)
 				return dateFull
+			},
+			currentLocale(){
+				return this.$store.getters.getLocale
 			}
 		},
 		watch: {
@@ -150,6 +153,11 @@
 					this.$error(value)
 				}
 				console.log(value)
+			},
+			currentLocale(value){
+				console.log('change locale!')
+				this.destroyDatepicker()
+				this.initializeDatepicker()
 			}
 		},
 		methods: {
@@ -188,14 +196,30 @@
 						this.$router.push('/meetups')
 					}
 				}
+			},
+			initializeDatepicker(){
+				this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
+					i18n: {
+						cancel: this.$t('buttons.cancel'),
+						done: this.$t('buttons.ok'),
+						months: this.$t('datepicker.months'),
+						monthsShort: this.$t('datepicker.monthsShort')
+
+					},
+					onSelect: (date) => {
+						this.date = date
+					}
+				});
+			},
+			destroyDatepicker(){
+				if(this.datePicker){
+					this.datePicker.destroy()
+				}
+
 			}
 		},
 		mounted(){
-			this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
-				onSelect: (date) => {
-					this.date = date
-				}
-			});
+			this.initializeDatepicker()
 
 			this.timePicker = M.Timepicker.init(this.$refs.timepicker, {
 				twelveHour:false,
@@ -207,9 +231,8 @@
 			})
 		},
 		destroyed(){
-			if(this.datePicker){
-				this.datePicker.destroy()
-			}
+			this.destroyDatepicker()
+
 			if(this.timePicker){
 				this.timePicker.destroy()
 			}

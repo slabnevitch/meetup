@@ -20,16 +20,16 @@
 						<MeetupTimeEditDialog :meetup="meetup"></MeetupTimeEditDialog>
 						<!-- <a class="waves-effect waves-light btn-small">Изменить время</a> -->
 					</div>
-					<p class="meet-date">Дата: <b>{{meetup.date | dateFilter}}</b></p>
-					<p class="meet-date">Место: <b>{{meetup.location}}</b></p>
+					<p class="meet-date">{{$t('date')}} <b>{{meetup.date | dateFilter}}</b></p>
+					<p class="meet-date">{{$t('location')}} <b>{{meetup.location}}</b></p>
 					<p>{{meetup.description}}</p>
 				</div>
 				<div class="card-action right-align" v-show="isAuthorized">
 					<a class="waves-effect waves-light btn-large red lighten-1" 
 						@click.prevent="unRegister"
 						v-if="isRegisteredForMeetup"
-						>Отменить регистрацию</a>
-					<a v-else class="waves-effect waves-light btn-large red lighten-1" @click.prevent="register">Зарегистрироваться</a>
+						>{{$t('buttons.cancel-registration')}}</a>
+					<a v-else class="waves-effect waves-light btn-large red lighten-1" @click.prevent="register">{{$t('buttons.registration')}}</a>
 				</div>
 			</div>
 		</div>

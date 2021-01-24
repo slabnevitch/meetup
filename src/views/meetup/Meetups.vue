@@ -1,7 +1,7 @@
 <template>
   <div class="row">
   	<div class="col s12">
-    	<h3 class="header">Список мероприятий</h3>  		
+    	<h3 class="header">{{$t('page-headers.meetups-header')}}</h3>  		
   	</div>
   	<Preloader v-if="isPreload"></Preloader>
   	<div b-else class="col s12">
@@ -19,7 +19,7 @@
   					<span class="badge">{{new Date(meetup.date) | dateFilter}}</span>
   				</div>
   				<div class="card-action">
-  					<a href="#" @click.prevent="$router.push('/meetups/'+meetup.id)">Подробнее</a>
+  					<a href="#" @click.prevent="$router.push('/meetups/'+meetup.id)">{{$t('buttons.more')}}</a>
   				</div>
   			</div>
   		</div>  		

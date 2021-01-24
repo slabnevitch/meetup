@@ -13,7 +13,7 @@
 
 			<label for="timeepick">
 				<a class="waves-effect waves-light btn-small" href="#modal-date-edit"
-					@click.prevent="timePicker.open()">Изменить время</a>
+					@click.prevent="timePicker.open()">{{$t('buttons.edit-time')}}</a>
 			</label>
 		
 		</div>
