@@ -36,7 +36,6 @@
         </ul>
       </div>
     </nav>
-      locale:  {{$i18n.locale}}
 
     <!-- SIDENAV -->
     <ul class="sidenav main-menu" ref="sidenav" id="mobile-demo">

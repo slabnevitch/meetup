@@ -5,7 +5,7 @@
   	</div>
   	<div class="col s12 l6">
   		<ul class="collection with-header">
-  			<li class="collection-header"><h6>{{$t('your-meetups')}}</h6></li>
+  			<li class="collection-header"><h6><b>{{$t('your-meetups')}}</b></h6></li>
   			<li class="collection-item"
   				v-for="meetup in currentUserCreatedMeetups"
   				:key="meetup.id"><div>{{meetup.title}}<router-link :to="'/meetups/' + meetup.id" tag="a" class="secondary-content"><i class="material-icons">send</i></router-link></div></li>
@@ -14,7 +14,7 @@
 
   	<div class="col s12 l6">
   		<ul class="collection with-header">
-  			<li class="collection-header"><h6>{{$t('your-subscr')}}</h6></li>
+  			<li class="collection-header"><h6><b>{{$t('your-subscr')}}</b></h6></li>
   			<li class="collection-item"
   				v-for="meetup in currentUserRegisteredMeetups"
   				:key="meetup.id"><div>{{meetup.title}}<router-link :to="'/meetups/' + meetup.id" tag="a" class="secondary-content"><i class="material-icons">send</i></router-link></div></li>

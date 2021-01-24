@@ -88,6 +88,8 @@
 
 <script>
 	import Preloader from '@/components/Preloader.vue'
+	import datepicker from '@/mixins/datepicker'
+	import timepicker from '@/mixins/timepicker'
 
 	export default {
 		data(){
@@ -103,9 +105,7 @@
 				hoursAndMinutes: {
 					hours: '00',
 					minutes: '00'
-				},
-				datePicker: null,
-				timePicker: null
+				}
 			}
 		},
 		components: {
@@ -157,7 +157,9 @@
 			currentLocale(value){
 				console.log('change locale!')
 				this.destroyDatepicker()
+				this.destroyTimepicker()
 				this.initializeDatepicker()
+				this.initializeTimepicker()
 			}
 		},
 		methods: {
@@ -197,46 +199,17 @@
 					}
 				}
 			},
-			initializeDatepicker(){
-				this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
-					i18n: {
-						cancel: this.$t('buttons.cancel'),
-						done: this.$t('buttons.ok'),
-						months: this.$t('datepicker.months'),
-						monthsShort: this.$t('datepicker.monthsShort')
-
-					},
-					onSelect: (date) => {
-						this.date = date
-					}
-				});
-			},
-			destroyDatepicker(){
-				if(this.datePicker){
-					this.datePicker.destroy()
-				}
-
-			}
+			
 		},
+		mixins: [datepicker, timepicker],
 		mounted(){
 			this.initializeDatepicker()
-
-			this.timePicker = M.Timepicker.init(this.$refs.timepicker, {
-				twelveHour:false,
-				onSelect: (hour, minute) => {
-					this.hoursAndMinutes.hours = hour
-					this.hoursAndMinutes.minutes = minute
-					this.time = hour + ':' + minute
-				}
-			})
+			this.initializeTimepicker()			
 		},
 		destroyed(){
 			this.destroyDatepicker()
-
-			if(this.timePicker){
-				this.timePicker.destroy()
-			}
-		}
+			this.destroyTimepicker()
+		},
 	}
 </script>
 <style>
