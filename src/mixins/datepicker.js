@@ -18,6 +18,7 @@ export default{
 				},
 				onSelect: (date) => {
 					this.date = date
+					// this.datePickerOnSelect(date)
 				}
 			});
 		},

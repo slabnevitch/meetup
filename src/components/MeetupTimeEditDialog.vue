@@ -1,7 +1,7 @@
 <template>
 	<div class="picker-wrapper">
-		<!-- <p>{{this.fullTime.hours}}</p>
-		<p>{{this.fullTime.minutes}}</p> -->
+		<!-- <p>{{this.fullTime.hours}}</p> -->
+		
 		<div class="input-field">
 				<input
   				ref="timepicker" 
@@ -39,11 +39,54 @@
 		computed: {
 			isLoading(){
 				return this.$store.getters.getPreloader
+			},
+			currentLocale(){
+				return this.$store.getters.getLocale
+			}
+		},
+		watch: {
+			currentLocale(value){
+				console.log('change locale!')
+				this.destroyTimepicker()
+				this.initializeTimepicker()
 			}
 		},
 		methods: {
-			sendNewDate(){
+			initializeTimepicker(){
+				this.timePicker = M.Timepicker.init(this.$refs.timepicker, {
+					twelveHour:false,
+					autoClose: false,
+					i18n:{
+						done: this.$t('timepicker.done'),
+						cancel: this.$t('timepicker.cancel')
+					},
+					defaultTime: this.fullTime.hours +':'+ this.fullTime.minutes,
+					onSelect: (hour, minute) => {
+						this.fullTime.hours = hour
+						this.fullTime.minutes = minute
 
+						this.hasBeenChange = true
+					},
+					onCloseEnd: () => {
+						if(this.hasBeenChange == true){
+							const date = new Date(this.meetup.date)
+							date.setHours(this.fullTime.hours)
+							date.setMinutes(this.fullTime.minutes)
+
+							this.$store.dispatch('editMeetup', {
+								date: date,
+								id: this.meetup.id,
+							})
+
+						}
+						this.hasBeenChange = false
+					}
+				})
+			},
+			destroyTimepicker(){
+				if(this.timePicker){
+					this.timePicker.destroy()
+				}
 			}
 		},
 		created(){
@@ -51,37 +94,10 @@
 			this.fullTime.minutes = new Date(this.meetup.date).getMinutes()
 		},
 		mounted(){
-			this.timePicker = M.Timepicker.init(this.$refs.timepicker, {
-				twelveHour:false,
-				autoClose: false,
-				defaultTime: this.fullTime.hours +':'+ this.fullTime.minutes,
-				onSelect: (hour, minute) => {
-					this.fullTime.hours = hour
-					this.fullTime.minutes = minute
-
-					this.hasBeenChange = true
-				},
-				onCloseEnd: () => {
-					if(this.hasBeenChange == true){
-						const date = new Date(this.meetup.date)
-						date.setHours(this.fullTime.hours)
-						date.setMinutes(this.fullTime.minutes)
-						console.log(date)
-
-						this.$store.dispatch('editMeetup', {
-							date: date,
-							id: this.meetup.id,
-						})
-
-					}
-					this.hasBeenChange = false
-				}
-			})
+			this.initializeTimepicker()
 		},
 		destroyed(){
-			if(this.timePicker){
-				this.timePicker.destroy()
-			}
+			this.destroyTimepicker()
 		}
 
 	}

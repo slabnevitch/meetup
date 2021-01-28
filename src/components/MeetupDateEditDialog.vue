@@ -1,6 +1,5 @@
 <template>
 	<div class="picker-wrapper">
-		<!-- {{this.editedDate}} -->
 		<div class="input-field">
 			<input 
 			ref="datepicker"
@@ -33,20 +32,26 @@
 		computed: {
 			isLoading(){
 				return this.$store.getters.getPreloader
+			},
+			currentLocale(){
+				return this.$store.getters.getLocale
 			}
 		},
 		methods: {
-
-		},
-		created(){
-			this.editedDate = this.meetup.date
-		},
-		mounted(){
-			console.log(this.meetup)
-			this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
+			initializeDatepicker(){
+				this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
 				defaultDate: new Date(this.editedDate),
 				setDefaultDate: true,
 				// autoClose: true,
+				i18n: {
+					cancel: this.$root.$t('datepicker.cancel'),
+					done: this.$root.$t('datepicker.done'),
+					months: this.$root.$t('datepicker.months'),
+					monthsShort: this.$root.$t('datepicker.monthsShort'),
+					weekdays: this.$root.$t('datepicker.weekdays'),
+					weekdaysShort: this.$root.$t('datepicker.weekdaysShort'),
+					weekdaysAbbrev: this.$root.$t('datepicker.weekdaysAbbrev')
+				},
 				onSelect: (date) => {
 					this.editedDate = date
 				},
@@ -64,19 +69,34 @@
 					newDate.setHours(new Date(this.meetup.date).getHours())
 					newDate.setMinutes(new Date(this.meetup.date).getMinutes())
 
-					this.$store.dispatch('editMeetup', {
-						date: newDate,
-						id: this.meetup.id,
-					})
+						this.$store.dispatch('editMeetup', {
+							date: newDate,
+							id: this.meetup.id,
+						})
+					}
+				});
+			},
+			destroyDatepicker(){
+				if(this.datePicker){
+					this.datePicker.destroy()
 				}
-			});
-			console.log(this.datePicker)
-
+			}
+		},
+		created(){
+			this.editedDate = this.meetup.date
+		},
+		watch: {
+			currentLocale(value){
+				console.log('change locale!')
+				this.destroyDatepicker()
+				this.initializeDatepicker()
+			}
+		},
+		mounted(){
+			this.initializeDatepicker()
 		},
 		destroyed(){
-			if(this.datePicker){
-				this.datePicker.destroy()
-			}
+			this.destroyDatepicker()
 		}
 
 	}
