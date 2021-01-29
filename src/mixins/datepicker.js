@@ -7,6 +7,7 @@ export default{
 	methods: {
 		initializeDatepicker(){
 			this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
+				yearRange: 100,
 				i18n: {
 					cancel: this.$t('datepicker.cancel'),
 					done: this.$t('datepicker.done'),
@@ -18,6 +19,7 @@ export default{
 				},
 				onSelect: (date) => {
 					this.date = date
+					console.log('onSelect ' + date)
 					// this.datePickerOnSelect(date)
 				}
 			});

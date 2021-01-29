@@ -11,7 +11,7 @@
 
 			<label for="datepicker">
 				<a class="waves-effect waves-light btn-small" href="#modal-date-edit"
-					@click.prevent="datePicker.open()">{{$t('buttons.edit-date')}}</a>
+					@click.prevent="datePicker.open()">{{$t('buttons.edit-date')}} {{editedDate}}</a>
 			</label>
 		
 		</div>
@@ -42,7 +42,7 @@
 				this.datePicker = M.Datepicker.init(this.$refs.datepicker, {
 				defaultDate: new Date(this.editedDate),
 				setDefaultDate: true,
-				// autoClose: true,
+				yearRange: 100,
 				i18n: {
 					cancel: this.$root.$t('datepicker.cancel'),
 					done: this.$root.$t('datepicker.done'),
@@ -65,7 +65,7 @@
 					// newDate.setUTCDate(newDay) 
 					// newDate.setUTCMonth(newMonth)
 					// newDate.setUTCFullYear(newYear)
-
+					
 					newDate.setHours(new Date(this.meetup.date).getHours())
 					newDate.setMinutes(new Date(this.meetup.date).getMinutes())
 
