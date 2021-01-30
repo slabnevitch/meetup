@@ -75,7 +75,11 @@
 				}
 		},
 		mounted(){
-			this.modal = M.Modal.init(this.$refs.modal, {})
+			this.modal = M.Modal.init(this.$refs.modal, {
+				onOpenStart: function() {
+					M.textareaAutoResize(document.getElementById('textarea1'));
+				}
+			})
 
 			setTimeout(() => {
 				M.updateTextFields();

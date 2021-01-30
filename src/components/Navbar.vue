@@ -106,7 +106,11 @@ export default {
 
       }else{
         return [
-        
+          {
+            text: this.$t('menu.list'),
+            icon: 'supervisor_account',
+            to: '/meetups'
+          },
           {
             text: this.$t('menu.signup'),
             icon: 'face',

@@ -105,9 +105,10 @@
 	}
 	.card .card-image .card-title{
 		@include max-screen(600px){
-			white-space: nowrap;
+			
 			font-size: 16px;
 			padding: 15px;
+			@include dots-fam();
 		}
 		
 	}

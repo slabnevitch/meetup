@@ -160,3 +160,9 @@ $baseFontSize : 13;
  $maxWidth: $maxWidth - 320;
  padding-#{$side}: calc(#{$mobSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth}));
 }
+
+@mixin dots-fam(){
+	white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+}

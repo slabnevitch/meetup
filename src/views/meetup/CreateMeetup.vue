@@ -73,6 +73,7 @@
   		<div class="input-field col s12">
           <textarea 
           		v-model="description"
+          		@input="textareaInput"
 	          id="textarea1" 
 	          class="materialize-textarea"></textarea>
           <label for="textarea1">{{$t('fields.description')}}</label>
@@ -199,6 +200,9 @@
 					}
 				}
 			},
+			textareaInput(){
+				M.textareaAutoResize(document.getElementById('textarea1'));
+			}
 			
 		},
 		mixins: [datepicker, timepicker],
